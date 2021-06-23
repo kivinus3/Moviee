@@ -58,9 +58,11 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltLifecycleVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltLifecycleVersion"
 
-    // Retrofit + GSON
+    // Retrofit + GSON + OKHTTP
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    //noinspection GradleDependency
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     // Glide
     // noinspection GradleDependency
