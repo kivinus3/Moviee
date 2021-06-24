@@ -1,6 +1,6 @@
 package com.kivinus.moviee.api
 
-data class TmdbMovie(
+data class TmdbMovieResponse(
     val adult: Boolean,
     val backdrop_path: String,
     val genre_ids: List<Int>,
