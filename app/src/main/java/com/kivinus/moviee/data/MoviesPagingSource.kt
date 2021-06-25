@@ -3,7 +3,7 @@ package com.kivinus.moviee.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kivinus.moviee.api.TmdbApiService
-import com.kivinus.moviee.api.TmdbMovieResponse
+import com.kivinus.moviee.model.TmdbMovieResponse
 import com.kivinus.moviee.api.TmdbRequestTypes
 import retrofit2.HttpException
 

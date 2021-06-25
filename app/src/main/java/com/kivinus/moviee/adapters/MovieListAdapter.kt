@@ -6,7 +6,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kivinus.moviee.api.TmdbMovieResponse
+import com.kivinus.moviee.model.TmdbMovieResponse
 import com.kivinus.moviee.databinding.ListItemMovieBinding
 
 class MovieListAdapter :

@@ -1,4 +1,4 @@
-package com.kivinus.moviee.api
+package com.kivinus.moviee.model
 
 import com.google.gson.annotations.SerializedName
 

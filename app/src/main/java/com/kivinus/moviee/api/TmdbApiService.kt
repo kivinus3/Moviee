@@ -1,5 +1,7 @@
 package com.kivinus.moviee.api
 
+import com.kivinus.moviee.model.TmdbMovieResponse
+import com.kivinus.moviee.model.TmdbResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
