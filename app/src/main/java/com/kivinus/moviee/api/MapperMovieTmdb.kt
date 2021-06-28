@@ -8,8 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MapperMovieTmdb
-@Inject constructor()
-    : EntityMapper<TmdbMovieResponse, MovieEntity> {
+@Inject constructor() : EntityMapper<TmdbMovieResponse, MovieEntity> {
 
     override fun mapFromEntity(entity: TmdbMovieResponse): MovieEntity = MovieEntity(
         id = entity.id,
@@ -32,5 +31,21 @@ class MapperMovieTmdb
         vote_average = domainModel.rating,
         overview = domainModel.overview
     )
+
+    override fun mapListFromEntity(entitiesList: List<TmdbMovieResponse>): List<MovieEntity> {
+        val result: MutableList<MovieEntity> = mutableListOf()
+        for (i in entitiesList) {
+            result.add(mapFromEntity(i))
+        }
+        return result
+    }
+
+    override fun mapListToEntity(domainModelsList: List<MovieEntity>): List<TmdbMovieResponse> {
+        val result: MutableList<TmdbMovieResponse> = mutableListOf()
+        for (i in domainModelsList) {
+            result.add(mapToEntity(i))
+        }
+        return result
+    }
 
 }

@@ -21,7 +21,8 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     MovieListAdapter.OnItemClickListener {
 
     override fun onItemClick(movie: TmdbMovieResponse) {
-        val action = HomeFragmentDirections.actionHomeFragmentToMovieDetailFragment()
+        val action = HomeFragmentDirections
+            .actionHomeFragmentToMovieDetailFragment(movie.id)
         findNavController().navigate(action)
     }
 

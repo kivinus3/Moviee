@@ -17,11 +17,15 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
-        android:name="com.kivinus.moviee.MovieDetailFragment"
+        android:name="com.kivinus.moviee.fragments.MovieDetailFragment"
         android:label="fragment_movie_detail"
         tools:layout="@layout/fragment_movie_detail" >
         <action
             android:id="@+id/action_movieDetailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="selectedMovieId"
+            app:argType="integer"
+            />
     </fragment>
 </navigation>
