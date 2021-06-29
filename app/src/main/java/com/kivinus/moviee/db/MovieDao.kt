@@ -1,23 +1,24 @@
 package com.kivinus.moviee.db
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.kivinus.moviee.model.MovieEntity
+import kotlinx.coroutines.flow.Flow
 
 interface MovieDao {
 
     @Query("SELECT * FROM movies WHERE isLiked is 1")
-    fun selectAllFavorite(): List<MovieEntity>
+    fun getAllFavorite(): Flow<List<MovieEntity>>
 
     @Query("SELECT * FROM movies WHERE id=:id")
-    fun selectById(id: Int): MovieEntity
+    fun getById(id: Int): Flow<MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addMovie(movie: MovieEntity)
+    suspend fun addMovie(movie: MovieEntity)
 
     @Delete
-    fun deleteMovie(movie: MovieEntity)
+    suspend fun deleteMovie(movie: MovieEntity)
+
+    @Update
+    suspend fun updateMovie(movie: MovieEntity)
 
 }

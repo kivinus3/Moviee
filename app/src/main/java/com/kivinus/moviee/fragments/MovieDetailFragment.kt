@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.navigation.fragment.navArgs
 import com.kivinus.moviee.R
-import com.kivinus.moviee.databinding.FragmentHomeBinding
+import com.kivinus.moviee.data.LocalRepository
 import com.kivinus.moviee.databinding.FragmentMovieDetailBinding
-import com.kivinus.moviee.viewmodels.HomeViewModel
 import com.kivinus.moviee.viewmodels.MovieDetailViewModel
 
-class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
+class MovieDetailFragment @ViewModelInject
+constructor(
+    repoLocal: LocalRepository
+): Fragment(R.layout.fragment_movie_detail) {
 
+    // safe args
     private val args: MovieDetailFragmentArgs by navArgs()
 
     // view binding
@@ -22,12 +26,18 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     // view model
     private val viewModel by viewModels<MovieDetailViewModel>()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.selectedMovieId = args.selectedMovieId
         _binding = FragmentMovieDetailBinding.bind(view)
         binding.textView.text = viewModel.selectedMovieId.toString()
+
+        binding.btnLike.setOnClickListener {
+            TODO()
+        }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

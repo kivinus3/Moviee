@@ -11,11 +11,11 @@ import com.kivinus.moviee.data.NetworkRepository
 
 class HomeViewModel @ViewModelInject
 constructor(
-    repo: NetworkRepository) : ViewModel() {
+    repoNetwork: NetworkRepository) : ViewModel() {
 
     private val currentQuery = MutableLiveData(TmdbRequestTypes.POPULAR)
 
-    val movies = repo.getMoviesByQuery(currentQuery.value!!)
+    val movies = repoNetwork.getMoviesByQuery(currentQuery.value!!)
         .cachedIn(viewModelScope)
 
     fun getMoviesByQuery(query: String) {

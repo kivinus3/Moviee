@@ -1,6 +1,9 @@
 package com.kivinus.moviee.di
 
+import android.app.Application
+import androidx.room.Room
 import com.kivinus.moviee.api.TmdbApiService
+import com.kivinus.moviee.db.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,5 +23,19 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(TmdbApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDatabase(
+        app: Application
+    ) = Room
+        .databaseBuilder(app,
+            MovieDatabase::class.java,
+            "movie_database")
+        .build()
+
+    @Provides
+    fun provideTaskDao(db: MovieDatabase) = db.movieDao()
+
 
 }
