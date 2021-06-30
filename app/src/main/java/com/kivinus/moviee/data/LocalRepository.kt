@@ -11,20 +11,17 @@ import javax.inject.Singleton
 class LocalRepository
 @Inject constructor(private val movieDao: MovieDao) {
 
-    suspend fun addMovie(movie: MovieEntity): Job =
-        withContext(Dispatchers.IO) {
-            launch { movieDao.addMovie(movie) }
-        }
+    suspend fun addMovie(movie: MovieEntity) =
+        movieDao.addMovie(movie)
 
-    suspend fun deleteMovie(movie: MovieEntity): Job =
-        withContext(Dispatchers.IO) {
-            launch { movieDao.deleteMovie(movie) }
-        }
 
-    suspend fun updateMovie(movie: MovieEntity): Job =
-        withContext(Dispatchers.IO) {
-            launch { movieDao.updateMovie(movie) }
-        }
+    suspend fun deleteMovie(movie: MovieEntity) =
+        movieDao.deleteMovie(movie)
+
+
+    suspend fun updateMovie(movie: MovieEntity) =
+        movieDao.updateMovie(movie)
+
 
     fun getMovieById(id: Int): Flow<MovieEntity> =
         movieDao.getById(id)
@@ -32,5 +29,8 @@ class LocalRepository
 
     fun getFavoriteMovies(): Flow<List<MovieEntity>> =
         movieDao.getAllFavorite()
+
+    fun isRowIsExist(id: Int): Flow<Boolean> =
+        movieDao.isRowIsExist(id)
 
 }

@@ -3,30 +3,42 @@ package com.kivinus.moviee.viewmodels
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kivinus.moviee.api.MapperMovieTmdb
 import com.kivinus.moviee.data.LocalRepository
 import com.kivinus.moviee.data.NetworkRepository
 import com.kivinus.moviee.model.MovieEntity
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @ViewModelInject
 constructor(
-    private val repo: LocalRepository
+    private val repoLocal: LocalRepository,
+    private val repoNetwork: NetworkRepository,
+    private val mapperMovieTmdb: MapperMovieTmdb
 ) : ViewModel() {
 
-    var selectedMovieId: Int = -1
+    val selectedMovie: MutableStateFlow<MovieEntity?> = MutableStateFlow(null)
+    private val isMovieInDb: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    fun addToFavorite(movie: MovieEntity) {
-        movie.isLiked = true
+    fun init(id: Int) {
         viewModelScope.launch {
-            repo.addMovie(movie)
+            repoLocal.isRowIsExist(id).take(1).collect { isMovieInDb.value = it }
+            if (isMovieInDb.value) {
+                repoLocal.getMovieById(id).collect { selectedMovie.value = it }
+            } else {
+                selectedMovie.value = mapperMovieTmdb
+                    .mapFromEntity(repoNetwork.getMovieById(id))
+            }
         }
     }
 
-    fun removeFromFavorite(movie: MovieEntity) {
-        movie.isLiked = false
+    fun changeFavoriteStatus() {
+        val movie = selectedMovie.value!!
+        movie.isLiked = !(selectedMovie.value!!.isLiked)
         viewModelScope.launch {
-            repo.addMovie(movie)
+            repoLocal.updateMovie(movie)
         }
     }
 
 }
+

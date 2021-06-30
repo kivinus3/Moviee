@@ -29,9 +29,7 @@ object AppModule {
     fun provideDatabase(
         app: Application
     ) = Room
-        .databaseBuilder(app,
-            MovieDatabase::class.java,
-            "movie_database")
+        .databaseBuilder(app, MovieDatabase::class.java, "movie_database")
         .build()
 
     @Provides

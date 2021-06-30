@@ -1,20 +1,23 @@
 package com.kivinus.moviee.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.kivinus.moviee.R
-import com.kivinus.moviee.data.LocalRepository
 import com.kivinus.moviee.databinding.FragmentMovieDetailBinding
+import com.kivinus.moviee.model.MovieEntity
 import com.kivinus.moviee.viewmodels.MovieDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 
-class MovieDetailFragment @ViewModelInject
-constructor(
-    repoLocal: LocalRepository
-): Fragment(R.layout.fragment_movie_detail) {
+@AndroidEntryPoint
+class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
 
     // safe args
     private val args: MovieDetailFragmentArgs by navArgs()
@@ -27,15 +30,33 @@ constructor(
     private val viewModel by viewModels<MovieDetailViewModel>()
 
 
+    private fun setupUI(movie: MovieEntity) {
+        binding.apply {
+            val text = movie.id.toString() + movie.isLiked.toString()
+            textViewId.text = text
+            textViewTitle.text = movie.title
+        }
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.selectedMovieId = args.selectedMovieId
-        _binding = FragmentMovieDetailBinding.bind(view)
-        binding.textView.text = viewModel.selectedMovieId.toString()
 
-        binding.btnLike.setOnClickListener {
-            TODO()
+        //view binding
+        _binding = FragmentMovieDetailBinding.bind(view)
+
+        // set selectedMovie value in vm
+        viewModel.init(args.selectedMovieId)
+
+        // observe selectedMovie and update UI
+        lifecycleScope.launch {
+            viewModel.selectedMovie.collectLatest { movie ->
+                if (movie != null) { setupUI(movie) }
+            }
         }
+
+        // MovieEntity isLiked true/false
+        binding.btnLike.setOnClickListener { viewModel.changeFavoriteStatus() }
     }
 
 
