@@ -37,7 +37,7 @@ constructor(
         val movie = selectedMovie.value!!
         movie.isLiked = !(selectedMovie.value!!.isLiked)
         viewModelScope.launch {
-            repoLocal.updateMovie(movie)
+            repoLocal.addMovie(movie)
         }
     }
 

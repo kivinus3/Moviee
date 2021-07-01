@@ -20,11 +20,11 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment(R.layout.fragment_home),
     MovieListAdapter.OnItemClickListener {
 
+    // click listener for rv items
     override fun onItemClick(movie: TmdbMovieResponse) {
         val action = HomeFragmentDirections
             .actionHomeFragmentToMovieDetailFragment(movie.id)
-        findNavController().navigate(action)
-    }
+        findNavController().navigate(action) }
 
     // view binding
     private var _binding: FragmentHomeBinding? = null

@@ -14,7 +14,6 @@ class MapperMovieTmdb
         id = entity.id,
         title = entity.title,
         posterUrl = entity.poster_path,
-        backdropUrl = entity.backdrop_path,
         releaseDate = entity.release_date,
         rating = entity.vote_average,
         overview = entity.overview,
@@ -26,7 +25,6 @@ class MapperMovieTmdb
         id = domainModel.id,
         title = domainModel.title,
         poster_path = domainModel.posterUrl,
-        backdrop_path = domainModel.backdropUrl,
         release_date = domainModel.releaseDate,
         vote_average = domainModel.rating,
         overview = domainModel.overview
