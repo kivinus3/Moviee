@@ -11,6 +11,7 @@ buildscript {
         roomVersion = '2.3.0'
         hiltLifecycleVersion = '1.0.0-alpha01'
         okhttpVersion = '4.9.0'
+        lifecycleVersion='2.4.0-alpha02'
     }
     repositories {
         google()

@@ -33,6 +33,7 @@ constructor(
     }
 
     fun changeFavoriteStatus() {
+        if (selectedMovie.value == null) return
         val movie = selectedMovie.value!!
         movie.isLiked = !(selectedMovie.value!!.isLiked)
         viewModelScope.launch {

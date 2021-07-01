@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,4 +29,14 @@
             app:argType="integer"
             />
     </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.kivinus.moviee.fragments.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/watchLaterFragment"
+        android:name="com.kivinus.moviee.fragments.WatchLaterFragment"
+        android:label="fragment_watch_later"
+        tools:layout="@layout/fragment_watch_later" />
 </navigation>

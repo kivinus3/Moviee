@@ -1,11 +1,12 @@
 package com.kivinus.moviee.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.kivinus.moviee.R
 import com.kivinus.moviee.databinding.FragmentMovieDetailBinding
@@ -13,7 +14,6 @@ import com.kivinus.moviee.model.MovieEntity
 import com.kivinus.moviee.viewmodels.MovieDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -50,8 +50,12 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
 
         // observe selectedMovie and update UI
         lifecycleScope.launch {
-            viewModel.selectedMovie.collectLatest { movie ->
-                if (movie != null) { setupUI(movie) }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedMovie.collectLatest { movie ->
+                    if (movie != null) {
+                        setupUI(movie)
+                    }
+                }
             }
         }
 
@@ -60,10 +64,9 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     }
 
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
-
 
 }
