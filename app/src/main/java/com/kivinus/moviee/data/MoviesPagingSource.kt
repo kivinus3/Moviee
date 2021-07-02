@@ -6,6 +6,7 @@ import com.kivinus.moviee.api.TmdbApiService
 import com.kivinus.moviee.model.TmdbMovieResponse
 import com.kivinus.moviee.api.TmdbRequestTypes
 import retrofit2.HttpException
+import java.io.IOException
 
 class MoviesPagingSource
     (
@@ -49,6 +50,8 @@ class MoviesPagingSource
             )
 
         } catch (exception: HttpException) {
+            LoadResult.Error(exception)
+        } catch (exception: IOException) {
             LoadResult.Error(exception)
         }
     }
