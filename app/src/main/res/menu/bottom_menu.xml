@@ -9,9 +9,5 @@
         android:id="@+id/favoriteFragment"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Favorite" />
-    <item
-        android:id="@+id/watchLaterFragment"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="Watch Later" />
 
 </menu>

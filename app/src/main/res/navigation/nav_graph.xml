@@ -41,9 +41,4 @@
             android:id="@+id/action_favoriteFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/watchLaterFragment"
-        android:name="com.kivinus.moviee.fragments.WatchLaterFragment"
-        android:label="fragment_watch_later"
-        tools:layout="@layout/fragment_watch_later" />
 </navigation>

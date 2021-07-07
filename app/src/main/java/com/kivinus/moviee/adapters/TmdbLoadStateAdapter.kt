@@ -8,8 +8,8 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kivinus.moviee.databinding.LoadStateFooterBinding
 
-class TmdbLoadStateAdapter (private val retry: () -> Unit)
-    : LoadStateAdapter<TmdbLoadStateAdapter.LoadStateViewHolder>() {
+class TmdbLoadStateAdapter(private val retry: () -> Unit) :
+    LoadStateAdapter<TmdbLoadStateAdapter.LoadStateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
         val binding = LoadStateFooterBinding.inflate(
@@ -27,7 +27,7 @@ class TmdbLoadStateAdapter (private val retry: () -> Unit)
     inner class LoadStateViewHolder(private val binding: LoadStateFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun init() {
+        init {
             binding.btnRetryFooter.setOnClickListener { retry.invoke() }
         }
 

@@ -1,7 +1,6 @@
 package com.kivinus.moviee.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.kivinus.moviee.R
 import com.kivinus.moviee.adapters.FavoriteAdapter
 import com.kivinus.moviee.databinding.FragmentFavoriteBinding
-import com.kivinus.moviee.databinding.FragmentHomeBinding
 import com.kivinus.moviee.model.MovieEntity
 import com.kivinus.moviee.viewmodels.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +29,7 @@ class FavoriteFragment : Fragment(R.layout.fragment_favorite),
         findNavController().navigate(action)
     }
 
-    // vm
+    // view model
     private val viewModel by viewModels<FavoriteViewModel>()
 
     // view binding

@@ -29,20 +29,23 @@ class MoviesPagingSource
 
         return try {
 
-            var movies = emptyList<TmdbMovieResponse>()
+            // requests
+            val movies =
+                if (query == TmdbRequestTypes.POPULAR || query.isEmpty()) {
+                    val response = apiService.getPopularMovies(page = page)
+                    response.tmdbMoviesListResponse
+                }
 
-            // request popular movies
-            if (query == TmdbRequestTypes.POPULAR || query.isEmpty()) {
-                val response = apiService.getPopularMovies(page = page)
-                movies = response.tmdbMoviesListResponse
-            }
+                // request top rated movies
+                else if (query == TmdbRequestTypes.TOP_RATED) {
+                    val response = apiService.getTopRatedMovies(page = page)
+                    response.tmdbMoviesListResponse
+                } else {
+                    val response = apiService.searchMovies(page = page, query = query)
+                    response.tmdbMoviesListResponse
+                }
 
-            // request top rated movies
-            if (query == TmdbRequestTypes.TOP_RATED) {
-                val response = apiService.getTopRatedMovies(page = page)
-                movies = response.tmdbMoviesListResponse
-            }
-
+            // return page
             LoadResult.Page(
                 data = movies,
                 prevKey = if (page == 1) null else page - 1,

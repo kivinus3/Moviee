@@ -1,5 +1,6 @@
 package com.kivinus.moviee.viewmodels
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,16 +11,17 @@ import com.kivinus.moviee.data.NetworkRepository
 
 
 class HomeViewModel @ViewModelInject
-constructor(
-    repoNetwork: NetworkRepository) : ViewModel() {
+constructor(private val repoNetwork: NetworkRepository) : ViewModel() {
 
-    private val currentQuery = MutableLiveData(TmdbRequestTypes.POPULAR)
+    var currentQuery = ""
 
-    val movies = repoNetwork.getMoviesByQuery(currentQuery.value!!)
+    var movies = repoNetwork.getMoviesByQuery(currentQuery)
         .cachedIn(viewModelScope)
 
-    fun getMoviesByQuery(query: String) {
-        currentQuery.value = query
+    fun changeQuery(query: String) {
+        currentQuery = query
+        movies = repoNetwork.getMoviesByQuery(currentQuery)
+            .cachedIn(viewModelScope)
     }
 }
 

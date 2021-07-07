@@ -34,4 +34,12 @@ interface TmdbApiService {
         @Query("language") language: String = "en-US"
     ): TmdbMovieResponse
 
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("api_key") apiKey: String = API_KEY,
+        @Query("page") page: Int,
+        @Query("language") language: String = "en-US",
+        @Query("query") query: String
+    ): TmdbResponse
+
 }

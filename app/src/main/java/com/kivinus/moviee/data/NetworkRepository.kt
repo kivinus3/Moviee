@@ -2,7 +2,6 @@ package com.kivinus.moviee.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.kivinus.moviee.api.MapperMovieTmdb
 import com.kivinus.moviee.api.TmdbApiService
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -16,6 +15,7 @@ class NetworkRepository
     fun getMoviesByQuery(query: String) =
         Pager(
             config = PagingConfig(
+                initialLoadSize = 20,
                 enablePlaceholders = false,
                 pageSize = 20,
                 maxSize = 60

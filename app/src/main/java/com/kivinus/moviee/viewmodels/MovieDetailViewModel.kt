@@ -7,6 +7,7 @@ import com.kivinus.moviee.api.MapperMovieTmdb
 import com.kivinus.moviee.data.LocalRepository
 import com.kivinus.moviee.data.NetworkRepository
 import com.kivinus.moviee.model.MovieEntity
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -17,16 +18,19 @@ constructor(
     private val mapperMovieTmdb: MapperMovieTmdb
 ) : ViewModel() {
 
-    val selectedMovie: MutableStateFlow<MovieEntity?> = MutableStateFlow(null)
-    private val isMovieInDb: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    private val _selectedMovie: MutableStateFlow<MovieEntity?> = MutableStateFlow(null)
+    val selectedMovie: StateFlow<MovieEntity?> = _selectedMovie
+
+    private var isMovieInDb = false
 
     fun init(id: Int) {
         viewModelScope.launch {
-            repoLocal.isRowIsExist(id).take(1).collect { isMovieInDb.value = it }
-            if (isMovieInDb.value) {
-                repoLocal.getMovieById(id).collect { selectedMovie.value = it }
+            repoLocal.isRowIsExist(id).take(1).collect { isMovieInDb = it }
+            if (isMovieInDb) {
+                repoLocal.getMovieById(id).collect { _selectedMovie.value = it }
             } else {
-                selectedMovie.value = mapperMovieTmdb
+                _selectedMovie.value = mapperMovieTmdb
                     .mapFromEntity(repoNetwork.getMovieById(id))
             }
         }

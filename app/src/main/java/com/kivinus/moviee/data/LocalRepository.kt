@@ -11,9 +11,11 @@ import javax.inject.Singleton
 class LocalRepository
 @Inject constructor(private val movieDao: MovieDao) {
 
-    suspend fun addMovie(movie: MovieEntity) =
-        movieDao.addMovie(movie)
-
+    suspend fun addMovie(movie: MovieEntity) {
+        if (!movie.isLiked && !movie.watchLater) {
+            deleteMovie(movie)
+        } else movieDao.addMovie(movie)
+    }
 
     suspend fun deleteMovie(movie: MovieEntity) =
         movieDao.deleteMovie(movie)

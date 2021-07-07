@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.favoriteFragment -> showBottomNav()
                 R.id.homeFragment -> showBottomNav()
-                R.id.watchLaterFragment -> showBottomNav()
                 else -> hideBottomNav() } }
     }
 
