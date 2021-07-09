@@ -2,7 +2,6 @@ package com.kivinus.moviee.data
 
 import com.kivinus.moviee.db.MovieDao
 import com.kivinus.moviee.model.MovieEntity
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,18 +11,13 @@ class LocalRepository
 @Inject constructor(private val movieDao: MovieDao) {
 
     suspend fun addMovie(movie: MovieEntity) {
-        if (!movie.isLiked && !movie.watchLater) {
+        if (!movie.isLiked) {
             deleteMovie(movie)
         } else movieDao.addMovie(movie)
     }
 
-    suspend fun deleteMovie(movie: MovieEntity) =
+    private suspend fun deleteMovie(movie: MovieEntity) =
         movieDao.deleteMovie(movie)
-
-
-    suspend fun updateMovie(movie: MovieEntity) =
-        movieDao.updateMovie(movie)
-
 
     fun getMovieById(id: Int): Flow<MovieEntity> =
         movieDao.getById(id)

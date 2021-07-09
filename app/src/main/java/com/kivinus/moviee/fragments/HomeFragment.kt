@@ -1,12 +1,16 @@
 package com.kivinus.moviee.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.kivinus.moviee.R
@@ -17,9 +21,9 @@ import com.kivinus.moviee.databinding.FragmentHomeBinding
 import com.kivinus.moviee.model.TmdbMovieResponse
 import com.kivinus.moviee.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -43,6 +47,8 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     // rv adapter
     private val _adapter: MovieListAdapter by lazy { MovieListAdapter(this) }
 
+    // variable to control job
+    private lateinit var jobCollectMovies: Job
 
     private fun setupUI() {
 
@@ -75,18 +81,39 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
     }
 
+    private fun setupJob() {
+        jobCollectMovies = viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.movies.collectLatest { movies -> _adapter.submitData(movies) }
+            }
+        }
+        jobCollectMovies.start()
+    }
+
     private fun setNewMovieData(q: String) {
-        val query = q.trim().toLowerCase(Locale.getDefault())
+        val query = q.trim()
 
         if (query != viewModel.currentQuery && query != "") {
+            closeKeyboard()
+
             viewModel.changeQuery(query)
 
             binding.recyclerView.smoothScrollToPosition(0)
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.movies.collectLatest { movies -> _adapter.submitData(movies) }
+            jobCollectMovies = viewLifecycleOwner.lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.movies.collectLatest { movies -> _adapter.submitData(movies) }
+                }
             }
+            jobCollectMovies.start()
         }
+    }
+
+
+    private fun closeKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)
+                as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
 
@@ -106,6 +133,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        closeKeyboard()
         when (item.itemId) {
             R.id.item_popular -> {
                 setNewMovieData(TmdbRequestTypes.POPULAR)
@@ -122,7 +150,7 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentHomeBinding.bind(view)
         setupUI()
-        setNewMovieData(TmdbRequestTypes.POPULAR)
+        setupJob()
     }
 
 

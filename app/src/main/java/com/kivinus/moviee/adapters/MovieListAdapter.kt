@@ -50,6 +50,7 @@ class MovieListAdapter(private val clickListener: OnItemClickListener) :
                 .load("https://image.tmdb.org/t/p/w500/$path")
                 .into(binding.moviePoster)
         }
+
     }
 
 

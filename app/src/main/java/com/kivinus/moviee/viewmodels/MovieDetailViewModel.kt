@@ -7,8 +7,10 @@ import com.kivinus.moviee.api.MapperMovieTmdb
 import com.kivinus.moviee.data.LocalRepository
 import com.kivinus.moviee.data.NetworkRepository
 import com.kivinus.moviee.model.MovieEntity
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
 class MovieDetailViewModel @ViewModelInject
